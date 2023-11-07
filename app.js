@@ -4,12 +4,13 @@ const port = 3000;
 // mongodb 연결
 const goodsRouter = require('./routes/goods.js');
 const cartsRouter = require("./routes/carts.js")
+const productRouter = require("./routes/product.js");
 //index.js 같은 경우에는 폴더를 가져오는 경우에도 바로 사용되기 때문에 schemas 뒤에 빠져 있다고 봐도 된다.
 const connect = require("./schemas");
 connect();
 
 app.use(express.json());
-app.use("/api",[goodsRouter, cartsRouter])
+app.use("/api",[goodsRouter, cartsRouter, productRouter])
 
 app.post("/", (req,res)=>{
     console.log(req.body);

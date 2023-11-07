@@ -5,6 +5,8 @@ const products = require("../schemas/product.js");
 //상품등록
 router.get("/products", async (req, res) => {
     const { productName, content, author, password } = req.body;
+    const product = await products.find({}).sort((a, b) => b.goodsId - a.goodsId);
+    const goodsId = product.length === 0 ? 1 : Number(product[0].goodsId) + 1;
     try{
         await products.create({
             goodsId: goodsId,
@@ -25,7 +27,7 @@ router.get("/products", async (req, res) => {
 
 // 상품 목록 조회
 router.get("/products", async (req, res) => {
-    const product = await products.find({}).sort((a, b) => a.goodsId - b.goodsId);
+    const product = await products.find({}).sort((a, b) => b.goodsId - a.goodsId);
     res.json({ data: product });
 });
 
@@ -58,6 +60,7 @@ module.exports = router;
 
 
 // 상품 정보 수정
+// schemas에 quantity 추가해서 quantity가 0이면 "판매완료"로
 router.put("/products/:goodsId", async (req, res) => {
     const { goodsId } = req.params;
     const { productName, content, status, password } = req.body;
